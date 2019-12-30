@@ -23,14 +23,28 @@ class General():
 	@classmethod
 	@cache.memoize(timeout=config.cache)
 	def supply(cls):
-		supply = 0
 		data = utils.make_request('getblockchaininfo')
 		height = data['result']['blocks']
-		for height in range(0, height + 1):
-			supply += utils.reward(height)
+		calc_height = height
+
+		reward = utils.satoshis(42.94967296)
+		halvings = 12500000
+		halvings_count = 0
+		supply = reward
+
+		while calc_height > halvings:
+			total = halvings * reward
+			reward = reward / 2
+			calc_height = calc_height - halvings
+			halvings_count += 1
+
+			supply += total
+
+		supply = supply + calc_height * reward
 
 		return {
-			'supply': supply,
+			'halvings': int(halvings_count),
+			'supply': int(supply),
 			'height': height
 		}
 
