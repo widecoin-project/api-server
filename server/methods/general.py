@@ -8,8 +8,8 @@ class General():
 		data = utils.make_request('getblockchaininfo')
 
 		if data['error'] is None:
+			data['result']['supply'] = utils.supply(data['result']['blocks'])
 			data['result']['reward'] = utils.reward(data['result']['blocks'])
-			data['result']['debug'] = config.debug
 			data['result'].pop('verificationprogress')
 			data['result'].pop('initialblockdownload')
 			data['result'].pop('pruned')
@@ -25,28 +25,10 @@ class General():
 	def supply(cls):
 		data = utils.make_request('getblockchaininfo')
 		height = data['result']['blocks']
-		calc_height = height
+		result = utils.supply(height)
+		result['height'] = height
 
-		reward = utils.satoshis(42.94967296)
-		halvings = 12500000
-		halvings_count = 0
-		supply = reward
-
-		while calc_height > halvings:
-			total = halvings * reward
-			reward = reward / 2
-			calc_height = calc_height - halvings
-			halvings_count += 1
-
-			supply += total
-
-		supply = supply + calc_height * reward
-
-		return {
-			'halvings': int(halvings_count),
-			'supply': int(supply),
-			'height': height
-		}
+		return result
 
 	@classmethod
 	def fee(cls):
