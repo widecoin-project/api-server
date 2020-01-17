@@ -140,6 +140,13 @@ class SupplyPlain(Resource):
 		data = int(utils.amount(General().supply()['supply']))
 		return Response(str(data), mimetype='text/plain')
 
+class Price(Resource):
+	@stats.rest
+	def get(self):
+		data = General().price()
+		return utils.response(data['sugarchain'])
+
+
 api.add_resource(GetInfo, '/info')
 api.add_resource(BlockByHeight, '/height/<int:height>')
 api.add_resource(HashByHeight, '/hash/<int:height>')
@@ -157,3 +164,4 @@ api.add_resource(SupplyPlain, '/supply/plain')
 api.add_resource(Supply, '/supply')
 api.add_resource(EstimateFee, '/fee')
 api.add_resource(Broadcast, '/broadcast')
+api.add_resource(Price, '/price')
