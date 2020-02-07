@@ -11,14 +11,25 @@ First of all you have to create `config.py` file in root of project directory wi
 ```
 rid = 'api-server'
 cache = 3600  # Cache request for 1 hour
-secret = 'Lorem ipsum dolor sit amet.'
-endpoint = 'http://rpcuser:rpcpassword@127.0.0.1:6501/'
+secret = 'YOU SHOULD HAVE A VERY STRONG PASSWORD HERE'
+endpoint = 'http://rpcuser:rpcpassword@127.0.0.1:34229/' # RPC 34229 or 44229
 host = '0.0.0.0'
 port = 1234
 debug = True
 ```
 
-All request should be send to this endpoint: `https://api.mbc.wiki`
+# Install dependencies
+```
+$ sudo apt-get install python3-pip
+$ pip3 install -r requirements.txt
+```
+
+# Run
+```
+$ python3 app.py
+```
+
+All request should be send to this endpoint: `https://api.sugarchain.org/`
 
 Responce have following fields:
 
