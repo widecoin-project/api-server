@@ -1,10 +1,8 @@
 # Getting started
---------------
 
 This is RESTful API which will allow you to interact with Sugarchain blockchain.
 
 # How to use it?
---------------
 
 First of all you have to create `config.py` file in root of project directory with following content:
 
