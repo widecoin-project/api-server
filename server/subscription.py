@@ -81,33 +81,25 @@ def UnsubscribeBlocks():
 
 @stats.socket
 def SubscribeAddress(address):
-    check = Address.validate(address)
-    if check["result"]["isvalid"]:
-        if request.sid not in state.subscribers:
-            state.subscribers[request.sid] = []
+    if request.sid not in state.subscribers:
+        state.subscribers[request.sid] = []
 
-        if address not in state.watch_addresses:
-            state.watch_addresses[address] = [request.sid]
-        else:
-            state.watch_addresses[address].append(request.sid)
+    if address not in state.watch_addresses:
+        state.watch_addresses[address] = [request.sid]
+    else:
+        state.watch_addresses[address].append(request.sid)
 
-        state.subscribers[request.sid].append(address)
-        flask_socketio.join_room(address, request.sid)
+    state.subscribers[request.sid].append(address)
+    flask_socketio.join_room(address, request.sid)
 
-        return True
-
-    return False
+    return True
 
 @stats.socket
 def UnubscribeAddress(address):
-    check = Address.validate(address)
-    if check["result"]["isvalid"]:
-        if request.sid in state.watch_addresses[address]:
-            state.watch_addresses[address].remove(request.sid)
-            flask_socketio.leave_room(address, request.sid)
-            if len(state.watch_addresses[address]) == 0:
-                state.watch_addresses.pop(address)
+    if request.sid in state.watch_addresses[address]:
+        state.watch_addresses[address].remove(request.sid)
+        flask_socketio.leave_room(address, request.sid)
+        if len(state.watch_addresses[address]) == 0:
+            state.watch_addresses.pop(address)
 
-            return True
-
-    return False
+        return True

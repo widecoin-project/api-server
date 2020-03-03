@@ -6,10 +6,6 @@ class Address():
         return utils.make_request("getaddressbalance", [address])
 
     @classmethod
-    def validate(cls, address: str):
-        return utils.make_request("validateaddress", [address])
-
-    @classmethod
     def mempool(cls, address: str, raw=False):
         data = utils.make_request("getaddressmempool", [address])
 
@@ -72,10 +68,8 @@ class Address():
         addresses = list(set(addresses))
         result = []
         for address in addresses:
-            check = cls.validate(address)
-            if check["result"]["isvalid"]:
-                data = utils.make_request("getaddresstxids", [address])
-                if len(data["result"]) > 0:
-                    result.append(address)
+            data = utils.make_request("getaddresstxids", [address])
+            if len(data["result"]) > 0:
+                result.append(address)
 
         return utils.response(result)
