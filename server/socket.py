@@ -1,6 +1,7 @@
 from server.methods.transaction import Transaction
 from server.methods.general import General
 from server.methods.address import Address
+from server import subscription
 from server import stats
 from server import utils
 
@@ -53,6 +54,13 @@ def TransactionBatch(hashes: list):
     return utils.response(result)
 
 def init(sio):
+    sio.on_event("connect", subscription.Connect)
+    sio.on_event("subscribe.address", subscription.SubscribeAddress)
+    sio.on_event("subscribe.blocks", subscription.SubscribeBlocks)
+    sio.on_event("unsubscribe.address", subscription.UnubscribeAddress)
+    sio.on_event("unsubscribe.blocks", subscription.UnsubscribeBlocks)
+    sio.on_event("disconnect", subscription.Disconnect)
+
     sio.on_event("general.info", GetInfo)
     sio.on_event("general.fee", EstimateFee)
     sio.on_event("address.unspent", AddressUnspent)

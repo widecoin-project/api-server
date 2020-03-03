@@ -18,13 +18,12 @@ start_time = time.monotonic()
 socket_counter = 0
 rest_counter = 0
 
+watch_addresses = {}
 connections = 0
 subscribers = {}
 thread = None
 mempool = []
-rooms = {}
 
-from server import subscription
 from server import routes
 from server import socket
 from server import rest
