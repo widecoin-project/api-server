@@ -6,162 +6,161 @@ from server.methods.block import Block
 from flask import Response
 from server import stats
 from server import utils
-from server import api
 
 class GetInfo(Resource):
-	@stats.rest
-	def get(self):
-		return General().info()
+    @stats.rest
+    def get(self):
+        return General().info()
 
 class BlockByHeight(Resource):
-	@stats.rest
-	def get(self, height):
-		parser = reqparse.RequestParser()
-		parser.add_argument('offset', type=int, default=0)
-		args = parser.parse_args()
+    @stats.rest
+    def get(self, height):
+        parser = reqparse.RequestParser()
+        parser.add_argument("offset", type=int, default=0)
+        args = parser.parse_args()
 
-		data = Block().height(height)
-		if data['error'] is None:
-			data['result']['tx'] = data['result']['tx'][args['offset']:args['offset'] + 10]
+        data = Block().height(height)
+        if data["error"] is None:
+            data["result"]["tx"] = data["result"]["tx"][args["offset"]:args["offset"] + 10]
 
-		return data
+        return data
 
 class HashByHeight(Resource):
-	@stats.rest
-	def get(self, height):
-		return Block().get(height)
+    @stats.rest
+    def get(self, height):
+        return Block().get(height)
 
 class BlocksByRange(Resource):
-	@stats.rest
-	def get(self, height):
-		parser = reqparse.RequestParser()
-		parser.add_argument('offset', type=int, default=30)
-		args = parser.parse_args()
+    @stats.rest
+    def get(self, height):
+        parser = reqparse.RequestParser()
+        parser.add_argument("offset", type=int, default=30)
+        args = parser.parse_args()
 
-		if args['offset'] > 100:
-			args['offset'] = 100
+        if args["offset"] > 100:
+            args["offset"] = 100
 
-		result = Block().range(height, args['offset'])
-		return utils.response(result)
+        result = Block().range(height, args["offset"])
+        return utils.response(result)
 
 class BlockByHash(Resource):
-	@stats.rest
-	def get(self, bhash):
-		parser = reqparse.RequestParser()
-		parser.add_argument('offset', type=int, default=0)
-		args = parser.parse_args()
+    @stats.rest
+    def get(self, bhash):
+        parser = reqparse.RequestParser()
+        parser.add_argument("offset", type=int, default=0)
+        args = parser.parse_args()
 
-		data = Block().hash(bhash)
-		if data['error'] is None:
-			data['result']['tx'] = data['result']['tx'][args['offset']:args['offset'] + 10]
+        data = Block().hash(bhash)
+        if data["error"] is None:
+            data["result"]["tx"] = data["result"]["tx"][args["offset"]:args["offset"] + 10]
 
-		return data
+        return data
 
 class BlockHeader(Resource):
-	@stats.rest
-	def get(self, bhash):
-		data = utils.make_request('getblockheader', [bhash])
-		if data['error'] is None:
-			data['result']['txcount'] = data['result']['nTx']
-			data['result'].pop('nTx')
+    @stats.rest
+    def get(self, bhash):
+        data = utils.make_request("getblockheader", [bhash])
+        if data["error"] is None:
+            data["result"]["txcount"] = data["result"]["nTx"]
+            data["result"].pop("nTx")
 
-		return data
+        return data
 
 class TransactionInfo(Resource):
-	@stats.rest
-	def get(self, thash):
-		return Transaction().info(thash)
+    @stats.rest
+    def get(self, thash):
+        return Transaction().info(thash)
 
 class AddressBalance(Resource):
-	@stats.rest
-	def get(self, address):
-		return Address().balance(address)
+    @stats.rest
+    def get(self, address):
+        return Address().balance(address)
 
 class AddressHistory(Resource):
-	@stats.rest
-	def get(self, address):
-		parser = reqparse.RequestParser()
-		parser.add_argument('offset', type=int, default=0)
-		args = parser.parse_args()
+    @stats.rest
+    def get(self, address):
+        parser = reqparse.RequestParser()
+        parser.add_argument("offset", type=int, default=0)
+        args = parser.parse_args()
 
-		data = Address().history(address)
-		if data['error'] is None:
-			data['result']['tx'] = data['result']['tx'][args['offset']:args['offset'] + 10]
+        data = Address().history(address)
+        if data["error"] is None:
+            data["result"]["tx"] = data["result"]["tx"][args["offset"]:args["offset"] + 10]
 
-		return data
+        return data
 
 class AddressMempool(Resource):
-	@stats.rest
-	def get(self, address):
-		return Address().mempool(address)
+    @stats.rest
+    def get(self, address):
+        return Address().mempool(address)
 
 class AddressUnspent(Resource):
-	@stats.rest
-	def get(self, address):
-		parser = reqparse.RequestParser()
-		parser.add_argument('amount', type=int, default=0)
-		args = parser.parse_args()
+    @stats.rest
+    def get(self, address):
+        parser = reqparse.RequestParser()
+        parser.add_argument("amount", type=int, default=0)
+        args = parser.parse_args()
 
-		return Address().unspent(address, args['amount'])
+        return Address().unspent(address, args["amount"])
 
 class MempoolInfo(Resource):
-	@stats.rest
-	def get(self):
-		return General().mempool()
+    @stats.rest
+    def get(self):
+        return General().mempool()
 
 class DecodeRawTx(Resource):
-	@stats.rest
-	def get(self, raw):
-		return Transaction().decode(raw)
+    @stats.rest
+    def get(self, raw):
+        return Transaction().decode(raw)
 
 class EstimateFee(Resource):
-	@stats.rest
-	def get(self):
-		return General().fee()
+    @stats.rest
+    def get(self):
+        return General().fee()
 
 class Broadcast(Resource):
-	@stats.rest
-	def post(self):
-		parser = reqparse.RequestParser()
-		parser.add_argument('raw', type=str, default="")
-		args = parser.parse_args()
+    @stats.rest
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("raw", type=str, default="")
+        args = parser.parse_args()
 
-		return Transaction().broadcast(args['raw'])
+        return Transaction().broadcast(args["raw"])
 
 class Supply(Resource):
-	@stats.rest
-	def get(self):
-		data = General().supply()
-		return utils.response(data)
+    @stats.rest
+    def get(self):
+        data = General().supply()
+        return utils.response(data)
 
 class SupplyPlain(Resource):
-	@stats.rest
-	def get(self):
-		data = int(utils.amount(General().supply()['supply']))
-		return Response(str(data), mimetype='text/plain')
+    @stats.rest
+    def get(self):
+        data = int(utils.amount(General().supply()["supply"]))
+        return Response(str(data), mimetype="text/plain")
 
 class Price(Resource):
-	@stats.rest
-	def get(self):
-		data = General().price()
-		return utils.response(data['sugarchain'])
+    @stats.rest
+    def get(self):
+        data = General().price()
+        return utils.response(data["sugarchain"])
 
-
-api.add_resource(GetInfo, '/info')
-api.add_resource(BlockByHeight, '/height/<int:height>')
-api.add_resource(HashByHeight, '/hash/<int:height>')
-api.add_resource(BlockByHash, '/block/<string:bhash>')
-api.add_resource(BlockHeader, '/header/<string:bhash>')
-api.add_resource(BlocksByRange, '/range/<int:height>')
-api.add_resource(AddressBalance, '/balance/<string:address>')
-api.add_resource(AddressMempool, '/mempool/<string:address>')
-api.add_resource(AddressUnspent, '/unspent/<string:address>')
-api.add_resource(AddressHistory, '/history/<string:address>')
-api.add_resource(TransactionInfo, '/transaction/<string:thash>')
-api.add_resource(DecodeRawTx, '/decode/<string:raw>')
-api.add_resource(MempoolInfo, '/mempool')
-api.add_resource(SupplyPlain, '/supply/plain')
-api.add_resource(Supply, '/supply')
-api.add_resource(EstimateFee, '/fee')
-api.add_resource(Broadcast, '/broadcast')
-api.add_resource(Price, '/price')
+def init(api):
+    api.add_resource(GetInfo, "/info")
+    api.add_resource(BlockByHeight, "/height/<int:height>")
+    api.add_resource(HashByHeight, "/hash/<int:height>")
+    api.add_resource(BlockByHash, "/block/<string:bhash>")
+    api.add_resource(BlockHeader, "/header/<string:bhash>")
+    api.add_resource(BlocksByRange, "/range/<int:height>")
+    api.add_resource(AddressBalance, "/balance/<string:address>")
+    api.add_resource(AddressMempool, "/mempool/<string:address>")
+    api.add_resource(AddressUnspent, "/unspent/<string:address>")
+    api.add_resource(AddressHistory, "/history/<string:address>")
+    api.add_resource(TransactionInfo, "/transaction/<string:thash>")
+    api.add_resource(DecodeRawTx, "/decode/<string:raw>")
+    api.add_resource(MempoolInfo, "/mempool")
+    api.add_resource(SupplyPlain, "/supply/plain")
+    api.add_resource(Supply, "/supply")
+    api.add_resource(EstimateFee, "/fee")
+    api.add_resource(Broadcast, "/broadcast")
+    api.add_resource(Price, "/price")

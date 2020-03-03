@@ -7,9 +7,9 @@ import config
 import time
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = config.secret
-cache = Cache(config={'CACHE_TYPE': 'simple'})
-sio = SocketIO(app, cors_allowed_origins='*')
+app.config["SECRET_KEY"] = config.secret
+cache = Cache(config={"CACHE_TYPE": "simple"})
+sio = SocketIO(app, cors_allowed_origins="*")
 cache.init_app(app)
 api = Api(app)
 CORS(app)
@@ -28,3 +28,7 @@ from server import subscription
 from server import routes
 from server import socket
 from server import rest
+
+routes.init(app)
+socket.init(sio)
+rest.init(api)
