@@ -1,5 +1,4 @@
 from server.methods.transaction import Transaction
-from server.methods.address import Address
 from server.methods.general import General
 from server.methods.block import Block
 from flask import request

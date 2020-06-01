@@ -24,10 +24,12 @@ subscribers = {}
 thread = None
 mempool = []
 
+from server import esplora
 from server import routes
 from server import socket
 from server import rest
 
+esplora.init(api, app)
 routes.init(app)
 socket.init(sio)
 rest.init(api)
