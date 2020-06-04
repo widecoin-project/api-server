@@ -14,6 +14,8 @@ endpoint = "http://rpcuser:rpcpassword@127.0.0.1:34229/" # RPC 34229 or 44229
 host = "0.0.0.0"
 port = 1234
 debug = False
+block_page = 10
+tx_page = 25
 ```
 
 # Install dependencies
