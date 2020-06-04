@@ -1,6 +1,7 @@
 from server import utils
 from server import cache
 import config
+import json
 
 class Transaction():
     @classmethod
@@ -70,3 +71,9 @@ class Transaction():
                                 updates[address] = [tx]
 
         return updates
+
+    @classmethod
+    def spent(cls, payload: dict):
+        data = json.dumps(payload)
+        print(data)
+        return utils.make_request("getspentinfo", [f"'{data}'"])
