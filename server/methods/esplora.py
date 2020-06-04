@@ -99,5 +99,6 @@ class Esplora():
             "fee": fee,
             "vin": inputs,
             "vout": outputs,
-            "status": status
+            "status": status,
+            "value": outputs_amount
         }

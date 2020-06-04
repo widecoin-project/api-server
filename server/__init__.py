@@ -7,6 +7,7 @@ import config
 import time
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 app.config["SECRET_KEY"] = config.secret
 cache = Cache(config={"CACHE_TYPE": "simple"})
 sio = SocketIO(app, cors_allowed_origins="*")
@@ -29,7 +30,7 @@ from server import routes
 from server import socket
 from server import rest
 
-esplora.init(api, app)
+esplora.init(app)
 routes.init(app)
 socket.init(sio)
 rest.init(api)
