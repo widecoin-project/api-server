@@ -73,7 +73,5 @@ class Transaction():
         return updates
 
     @classmethod
-    def spent(cls, payload: dict):
-        data = json.dumps(payload)
-        print(data)
-        return utils.make_request("getspentinfo", [f"'{data}'"])
+    def spent(cls, txid: str):
+        return utils.make_request("getspentinfo", [txid])
