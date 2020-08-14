@@ -14,39 +14,39 @@ def EstimateFee():
     return General().fee()
 
 @stats.socket
-def AddressUnspent(address: str, amount=0):
+def AddressUnspent(address=None, amount=0):
     return Address().unspent(address, amount)
 
 @stats.socket
-def AddressBalance(address: str):
+def AddressBalance(address=None):
     return Address().balance(address)
 
 @stats.socket
-def AddressHistory(address: str):
+def AddressHistory(address=None):
     return Address().history(address)
 
 @stats.socket
-def AddressMempool(address: str):
+def AddressMempool(address=None):
     return Address().mempool(address)
 
 @stats.socket
-def AddressMempoolRaw(address: str):
+def AddressMempoolRaw(address=None):
     return Address().mempool(address, True)
 
 @stats.socket
-def TransactionInfo(thash: str):
+def TransactionInfo(thash=None):
     return Transaction().info(thash)
 
 @stats.socket
-def Broadcast(raw: str):
+def Broadcast(raw=None):
     return Transaction().broadcast(raw)
 
 @stats.socket
-def CheckHistory(addresses: list):
+def CheckHistory(addresses=[]):
     return Address().check(addresses)
 
 @stats.socket
-def TransactionBatch(hashes: list):
+def TransactionBatch(hashes=[]):
     result = []
     for thash in hashes:
         result.append(Transaction().info(thash))
