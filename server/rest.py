@@ -133,7 +133,7 @@ def supply_plain():
     return Response(str(data), mimetype="text/plain")
 
 @stats.rest
-@blueprint.route("/supply", methods=["GET"])
+@blueprint.route("/price", methods=["GET"])
 def price():
     data = General().price()
     return jsonify(utils.response(data["sugarchain"]))
