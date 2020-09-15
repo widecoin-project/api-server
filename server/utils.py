@@ -48,7 +48,7 @@ def supply(height):
     }
 
 def satoshis(value):
-    return int(value * math.pow(10, 8))
+    return math.ceil(value * math.pow(10, 8))
 
 def amount(value):
     return round(value / math.pow(10, 8), 8)
