@@ -42,7 +42,12 @@ class Block():
             if data["error"] is None and nethash["error"] is None:
                 bhash = data["result"]
                 data.pop("result")
-                data["result"] = utils.make_request("getblock", [bhash])["result"]
+
+                block = utils.make_request("getblock", [bhash])
+                if block["error"] is not None:
+                    continue
+
+                data["result"] = block["result"]
                 data["result"]["nethash"] = int(nethash["result"])
                 data["result"]["txcount"] = data["result"]["nTx"]
                 data["result"].pop("nTx")
