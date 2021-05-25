@@ -2,11 +2,21 @@ from flask import Response, Blueprint, jsonify, request
 from server.methods.transaction import Transaction
 from server.methods.general import General
 from server.methods.address import Address
+from webargs.flaskparser import use_args
 from server.methods.block import Block
+from webargs import fields
 from server import stats
 from server import utils
 
 blueprint = Blueprint("rest", __name__)
+
+offset_args = {
+    "offset": fields.Int(missing=0)
+}
+
+amount_args = {
+    "amount": fields.Int(missing=0)
+}
 
 @stats.rest
 @blueprint.route("/info", methods=["GET"])
@@ -15,9 +25,9 @@ def get_info():
 
 @stats.rest
 @blueprint.route("/height/<int:height>", methods=["GET"])
-def block_by_height(height):
-    offset = request.args.get("offset")
-    offset = int(0 if offset is None else offset)
+@use_args(offset_args, location="query")
+def block_by_height(args, height):
+    offset = args["offset"]
 
     data = Block().height(height)
     if data["error"] is None:
@@ -32,9 +42,9 @@ def hash_by_height(height):
 
 @stats.rest
 @blueprint.route("/range/<int:height>", methods=["GET"])
-def blocks_by_range(height):
-    offset = request.args.get("offset")
-    offset = int(0 if offset is None else offset)
+@use_args(offset_args, location="query")
+def blocks_by_range(args, height):
+    offset = args["offset"]
 
     if offset > 100:
         offset = 100
@@ -44,9 +54,9 @@ def blocks_by_range(height):
 
 @stats.rest
 @blueprint.route("/block/<string:bhash>", methods=["GET"])
-def block_by_hash(bhash):
-    offset = request.args.get("offset")
-    offset = int(0 if offset is None else offset)
+@use_args(offset_args, location="query")
+def block_by_hash(args, bhash):
+    offset = args["offset"]
 
     data = Block().hash(bhash)
     if data["error"] is None:
@@ -76,9 +86,9 @@ def address_balance(address):
 
 @stats.rest
 @blueprint.route("/history/<string:address>", methods=["GET"])
-def address_history(address):
-    offset = request.args.get("offset")
-    offset = int(0 if offset is None else offset)
+@use_args(offset_args, location="query")
+def address_history(args, address):
+    offset = args["offset"]
 
     data = Address().history(address)
     if data["error"] is None:
@@ -93,10 +103,9 @@ def address_mempool(address):
 
 @stats.rest
 @blueprint.route("/unspent/<string:address>", methods=["GET"])
-def address_unspent(address):
-    amount = request.args.get("amount")
-    amount = int(0 if amount is None else amount)
-
+@use_args(amount_args, location="query")
+def address_unspent(args, address):
+    amount = args["amount"]
     return jsonify(Address().unspent(address, amount))
 
 @stats.rest

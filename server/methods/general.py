@@ -66,6 +66,7 @@ class General():
         return data
 
     @classmethod
+    @cache.memoize(timeout=600)
     def price(cls):
         link = "https://api.coingecko.com/api/v3/simple/price?ids=sugarchain&vs_currencies=usd,btc"
         return requests.get(link).json()
