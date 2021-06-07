@@ -38,7 +38,6 @@ class General():
     @classmethod
     def fee(cls):
         # ToDo: Fix me
-        # https://github.com/sugarchain-project/sugarchain/issues/34
 
         # data = utils.make_request("estimatesmartfee", [6])
 
@@ -68,5 +67,5 @@ class General():
     @classmethod
     @cache.memoize(timeout=600)
     def price(cls):
-        link = "https://api.coingecko.com/api/v3/simple/price?ids=sugarchain&vs_currencies=usd,btc"
+        link = "https://api.coingecko.com/api/v3/simple/price?ids=bitweb&vs_currencies=usd,btc"
         return requests.get(link).json()

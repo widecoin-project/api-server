@@ -145,7 +145,7 @@ def supply_plain():
 @blueprint.route("/price", methods=["GET"])
 def price():
     data = General().price()
-    return jsonify(utils.response(data["sugarchain"]))
+    return jsonify(utils.response(data["btechain"]))
 
 def init(app):
     app.register_blueprint(blueprint, url_prefix="/")
