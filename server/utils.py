@@ -19,7 +19,7 @@ def make_request(method, params=[]):
         return dead_response()
 
 def reward(height):
-    halvings = height // 840000
+    halvings = height // 2102400
 
     if halvings >= 64:
         return 0
@@ -28,7 +28,7 @@ def reward(height):
 
 def supply(height):
     reward = satoshis(50.00000000)
-    halvings = 840000
+    halvings = 2102400
     halvings_count = 0
     supply = reward
 
