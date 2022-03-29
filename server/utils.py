@@ -123,12 +123,13 @@ def getprice():
     price2 = requests.get(f"https://api.coinpaprika.com/v1/ticker/"+ticker+"-"+coin_name).json()
     price2_v2 = requests.get(f"https://api.coinpaprika.com/v1/tickers/"+ticker+"-"+coin_name).json()
         
-    if len(price)>0 and len(price2)>0 and price2_v2['error']!="id not found":
+    if len(price)>0 and len(price2)>0 and len(price2_v2['error'])>0:
         cg_lastupdate = price_v2[0]['last_updated']
         if len(price2_v2['error'])>0:
             cp_lastupdate = '1000-07-19 17:31:00'
         else:
             cp_lastupdate = price2_v2['last_updated']
+        #setactive = "Active"    
         format_data = "%Y-%m-%d %H:%M:%S"     
         ddate1 = parse(cg_lastupdate)
         ddate2 = parse(cp_lastupdate)
@@ -153,7 +154,7 @@ def getprice():
     elif len(price2)>0:
         btc = float(price2["price_btc"])
         usd = float(price2["price_usd"])
-        msg = setactive     
+        msg = setactive    
     else:
          msg = "Error market cap connection"
     return {
@@ -162,7 +163,7 @@ def getprice():
         "status": msg
     }
         
-def getprice_old(type):
+def getprice_old():
     ticker = "WCN"
     coin_name = "widecoin"
     setactive = "Active"
