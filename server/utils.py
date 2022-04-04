@@ -136,11 +136,9 @@ def getprice():
         else:
             cp_lastupdate = price2_v2['last_updated']
             cp_substr1_date = str(price_v2[0]['last_updated']).split("T")
-        #setactive = "Active"    
             
         ddate1 = parse(cg_lastupdate)
         ddate2 = parse(cp_lastupdate)
-        
         cp_substr1_time = str(cp_substr1_date[1]).split(".")
         cp_comb_dt = cp_substr1_date[0] + " " + cp_substr1_time[0]
         cp_comb_cd = datetime.strptime(cp_comb_dt, format_data)
