@@ -124,19 +124,28 @@ def getprice():
     price2_v2 = requests.get(f"https://api.coinpaprika.com/v1/tickers/"+ticker+"-"+coin_name).json()
         
     if len(price)>0 and len(price2)>0 and len(price2_v2['error'])>0:
-        cg_lastupdate = price_v2[0]['last_updated']
+        format_data = "%Y-%m-%d %H:%M:%S" 
+        print('aaaa:'+str(len(price_v2)))
+        if len(price_v2) <= 0:
+            cg_lastupdate = '1000-07-19 17:31:00'
+        else:
+            cg_lastupdate = price_v2[0]['last_updated']
+            
         if len(price2_v2['error'])>0:
             cp_lastupdate = '1000-07-19 17:31:00'
+            cp_substr1_date = ('1000-07-19T17:31:00').split("T")
         else:
             cp_lastupdate = price2_v2['last_updated']
+            cp_substr1_date = str(price_v2[0]['last_updated']).split("T")
         #setactive = "Active"    
-        format_data = "%Y-%m-%d %H:%M:%S"     
+            
         ddate1 = parse(cg_lastupdate)
         ddate2 = parse(cp_lastupdate)
-        cp_substr1_date = str(price_v2[0]['last_updated']).split("T")
+        
         cp_substr1_time = str(cp_substr1_date[1]).split(".")
         cp_comb_dt = cp_substr1_date[0] + " " + cp_substr1_time[0]
         cp_comb_cd = datetime.strptime(cp_comb_dt, format_data)
+        
         dt2 = (datetime.fromtimestamp(int(price2['last_updated'])) - timedelta(hours=2)).strftime('%Y-%m-%d %H:%M:%S')
         dt2_cd = datetime. strptime(dt2, format_data)
         if cp_comb_cd > dt2_cd:
