@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from dateutil import parser
 from urllib.parse import urlparse
 from urllib.parse import parse_qs
+import decimal
 import sys
 
 
@@ -44,12 +45,16 @@ def reward2(blockHeight):
         reward = 5
         halvings=2102400
         if blockHeight > halvings:
-            while blockHeight > halvings:
-                reward = reward/2
+            #while blockHeight > halvings:
+            reward = reward/2
             getrw = reward
         else:
             getrw = reward
     return format(getrw, '.2f')
+
+def significant(num, signum):
+    expo = 10**(int(math.log(num, 10)) - signum + 1)
+    return expo * (num // expo)
 
 def supply(height):
     # ---------Updated for WCN----------------
@@ -69,25 +74,25 @@ def supply(height):
         getward_c4 = 3999990 
         sub_total_supply = getward_c1 + getward_c2 + getward_c3 + getward_c4  + getward_c5
     #print('Info message:'+ str(calheight) +" reward:"+ str(getward_c3) +"tt:"+ str(sub_total_supply))
-    else:
+    elif height > 2102400:
         getward_c4 = 3999990
         getward_c5 = 8011990
-
+        h1 = 2.5
         reward = satoshis(5.00000000)
         halvings = 2102400
         supply = reward
         halvings_count = 0
 
-        while height > halvings:
-            total = halvings * reward
-            reward = reward / 2
+        if height > halvings:
+            #total = halvings * 2.5
             height = height - halvings
-            halvings_count += 1
-            supply += total
-
+            #halvings_count += 1
+            #supply += total
         #supply = supply + height * reward
         supplybfhalving = getward_c1 + getward_c2 + getward_c3 + getward_c4 + getward_c5
-        sub_total_supply = supplybfhalving+ (height * reward)
+        #sub_total_supply = supplybfhalving + (height * reward)
+        sub_total_supply2 = (supplybfhalving + (height * h1))
+        sub_total_supply3 = supplybfhalving
     # ---------End Updated----------------
     """reward = satoshis(50.00000000)
     halvings = 2102400
@@ -103,11 +108,11 @@ def supply(height):
         supply += total
 
     supply = supply + height * reward"""
-    #logger.info(sub_total_supply)
+    print(sub_total_supply2)
     return {
-        "halvings": int(halvings_count),
-        #"supply": int(supply)
-        "supply": int(str(sub_total_supply) + "00000000")
+        "halvings": int(1),
+        "supply": satoshis(sub_total_supply3)
+        #"supply": type(str(sub_total_supply) + "00000000")
     }
 
 def satoshis(value):
