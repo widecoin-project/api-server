@@ -111,7 +111,8 @@ def supply(height):
     print(sub_total_supply2)
     return {
         "halvings": int(1),
-        "supply": satoshis(sub_total_supply3)
+        "supply": satoshis(sub_total_supply3),
+        "total/max supply": satoshis(35000000)
         #"supply": type(str(sub_total_supply) + "00000000")
     }
 
