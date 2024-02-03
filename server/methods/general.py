@@ -31,11 +31,9 @@ class General():
     @cache.memoize(timeout=config.cache)
     def supply(cls):
         data = utils.make_request("getblockchaininfo")
-        print(data)
+        #print(data)
         #height = data["result"]["blocks"]
-        height = data["result"]["blocks"]
-        result = utils.supply(height)
-        result["height"] = height
+        result = utils.supplyrt()
 
         return result
     
