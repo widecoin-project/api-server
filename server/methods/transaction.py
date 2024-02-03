@@ -4,6 +4,7 @@ import config
 import json
 
 class Transaction():
+    
     @classmethod
     def broadcast(cls, raw: str):
         return utils.make_request("sendrawtransaction", [raw])

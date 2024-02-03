@@ -7,11 +7,11 @@ class General():
     @classmethod
     def info(cls):
         data = utils.make_request("getblockchaininfo")
-
+        data2 = utils.make_request("gettxoutsetinfo")
         if data["error"] is None:
             #data["result"]["supply"] = utils.supply(data["result"]["blocks"])["supply"]
             #data["result"]["reward"] = utils.reward2(data["result"]["blocks"])
-            data["result"]["supply"] = utils.supply(data["result"]["blocks"])["supply"]
+            data["result"]["supply"] = utils.satoshis(int(data2["result"]["total_amount"]))
             data["result"]["reward"] = utils.reward2(data["result"]["blocks"])
             data["result"].pop("verificationprogress")
             data["result"].pop("initialblockdownload")
