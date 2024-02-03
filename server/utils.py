@@ -55,7 +55,14 @@ def reward2(blockHeight):
 def significant(num, signum):
     expo = 10**(int(math.log(num, 10)) - signum + 1)
     return expo * (num // expo)
-
+def supplyrt():
+    data2 = make_request("gettxoutsetinfo")
+    return {
+        "halvings": int(1),
+        "supply": satoshis(int(data2["result"]["total_amount"])),
+        "total/max supply": satoshis(35000000)
+        #"supply": type(str(sub_total_supply) + "00000000")
+    }
 def supply(height):
     # ---------Updated for WCN----------------
     getward_c1 = 3500000
